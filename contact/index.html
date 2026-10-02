@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="../style.css" type="text/css">
 </head>
 <body>
     <header>
         <nav class="navbar">
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
-            <li><a href="/index.html">Contact</a></li>
+            <li><a href="index.html" class="active">Contact</a></li>
             <li><a href="../projects/index.html">Projects</a></li>
         </ul>
     </nav>
     </header>
     <main>
         <h1>Contact Info</h1>
+        <form action="mailto:yhu67852@gmail.com" method="post" enctype="text/plain">
+            <label>
+                Email
+                <input type="email" name="email" required>
+            </label>
+            <label>
+                Subject
+                <input name="subject" required>
+            </label>
+            <label>
+                Message
+                <textarea name="body" rows="6" required></textarea>
+            </label>
+            <button>Send</button>
+        </form>
     </main>
 </body>
 </html>
