@@ -4,43 +4,16 @@ export function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-const pages = [
-  { url: '', title: 'Home' },
-  { url: 'projects/', title: 'Projects' },
-  { url: 'contact/', title: 'Contact' },
-  { url: 'resume/', title: 'Resume' },
-  { url: 'https://github.com/yhu67852', title: 'GitHub' },
-];
-
-const BASE_PATH =
-  location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-    ? '/'
-    : '/portfolio/';
-
-const nav = document.createElement('nav');
-document.body.prepend(nav);
-
-for (const p of pages) {
-  let url = p.url;
-  const title = p.title;
-
-  url = !url.startsWith('http') ? BASE_PATH + url : url;
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.textContent = title;
-
-  a.classList.toggle(
-    'current',
-    a.host === location.host && a.pathname === location.pathname,
-  );
-
-  if (a.host !== location.host) {
-    a.target = '_blank';
-    a.rel = 'noreferrer noopener';
+function setColorScheme(colorScheme) {
+  document.documentElement.style.setProperty('color-scheme', colorScheme);
+  const select = document.querySelector('#theme-select');
+  if (select) {
+    select.value = colorScheme;
   }
+}
 
-  nav.append(a);
+if ('colorScheme' in localStorage) {
+  setColorScheme(localStorage.colorScheme);
 }
 
 document.body.insertAdjacentHTML(
@@ -59,11 +32,8 @@ document.body.insertAdjacentHTML(
 
 const select = document.querySelector('#theme-select');
 
-function setColorScheme(colorScheme) {
-  document.documentElement.style.setProperty('color-scheme', colorScheme);
-  if (select) {
-    select.value = colorScheme;
-  }
+if ('colorScheme' in localStorage) {
+  setColorScheme(localStorage.colorScheme);
 }
 
 select?.addEventListener('input', function (event) {
@@ -72,10 +42,47 @@ select?.addEventListener('input', function (event) {
   localStorage.colorScheme = scheme;
 });
 
-if ('colorScheme' in localStorage) {
-  setColorScheme(localStorage.colorScheme);
-}
+const pages = [
+  { url: '', title: 'Home' },
+  { url: 'projects/', title: 'Projects' },
+  { url: 'contact/', title: 'Contact' },
+  { url: 'resume/', title: 'Resume' },
+  { url: 'https://github.com/yhu67852', title: 'GitHub' },
+];
 
+const BASE_PATH =
+  location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    ? '/'
+    : '/portfolio/';
+
+const nav = document.createElement('nav');
+document.body.prepend(nav);
+
+const currentPath = location.pathname.replace(/index\.html$/, '');
+
+for (const p of pages) {
+  let url = p.url;
+  const title = p.title;
+
+  url = !url.startsWith('http') ? BASE_PATH + url : url;
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.textContent = title;
+
+  const linkPath = a.pathname.replace(/index\.html$/, '');
+
+  if (a.host === location.host && linkPath === currentPath) {
+    a.classList.add('current');
+  }
+
+  if (a.host !== location.host) {
+    a.target = '_blank';
+    a.rel = 'noreferrer noopener';
+  }
+
+  nav.append(a);
+}
 const form = document.querySelector('form');
 
 form?.addEventListener('submit', function (event) {

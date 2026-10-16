@@ -3,6 +3,10 @@
   accent-color: var(--color-accent);
 }
 
+html {
+  color-scheme: light dark;
+}
+
 body {
   font: 100%/1.5 system-ui;
   max-width: 100ch;
@@ -19,10 +23,12 @@ h1 {
   font-size: 400%;
 }
 
+/* Adaptive Navigation Bar */
 nav {
+  --border-color: oklch(50% 10% 200 / 40%);
   display: flex;
   margin-bottom: 2em;
-  border-bottom: 1px solid oklch(80% 3% 200);
+  border-bottom: 1px solid var(--border-color);
 }
 
 nav ul,
@@ -41,15 +47,25 @@ nav a {
 }
 
 nav a.current {
-  border-bottom-color: oklch(80% 3% 200);
-  padding-bottom: 0.1em; 
+  border-bottom-color: var(--border-color);
+  padding-bottom: 0.1em;
 }
 
 nav a:hover {
   border-bottom-color: var(--color-accent);
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
+/* Theme Switcher */
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+  font-family: inherit;
+}
+
+/* Form Controls */
 form {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -58,7 +74,8 @@ form {
 
 input,
 textarea,
-button {
+button,
+select {
   font: inherit;
 }
 
@@ -76,6 +93,7 @@ form button {
   cursor: pointer;
 }
 
+/* Projects Grid */
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
@@ -97,39 +115,4 @@ form button {
   width: 100%;
   height: auto;
   display: block;
-}
-
-html {
-  color-scheme: light dark;
-}
-
-nav {
-  --border-color: oklch(50% 10% 200 / 40%);
-  display: flex;
-  margin-bottom: 2em;
-  border-bottom: 1px solid var(--border-color);
-}
-
-nav a.current {
-  border-bottom-color: var(--border-color);
-}
-
-nav a:hover {
-  border-bottom-color: var(--color-accent);
-  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
-}
-
-.color-scheme {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 80%;
-  font-family: inherit;
-}
-
-input,
-textarea,
-button,
-select {
-  font: inherit;
 }
