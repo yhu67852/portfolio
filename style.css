@@ -23,7 +23,6 @@ h1 {
   font-size: 400%;
 }
 
-/* Adaptive Navigation Bar */
 nav {
   --border-color: oklch(50% 10% 200 / 40%);
   display: flex;
@@ -56,7 +55,6 @@ nav a:hover {
   background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
-/* Theme Switcher */
 .color-scheme {
   position: absolute;
   top: 1rem;
@@ -65,7 +63,6 @@ nav a:hover {
   font-family: inherit;
 }
 
-/* Form Controls */
 form {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -93,7 +90,6 @@ form button {
   cursor: pointer;
 }
 
-/* Projects Grid */
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
@@ -115,4 +111,27 @@ form button {
   width: 100%;
   height: auto;
   display: block;
+}
+
+#profile-stats dl {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#profile-stats dt {
+  grid-row: 1;
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#profile-stats dd {
+  grid-row: 2;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
 }
