@@ -4,9 +4,6 @@ export function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-/* ==========================================================================
-   Lab 4 - Step 1.2: Reusable Fetch JSON Helper
-   ========================================================================== */
 export async function fetchJSON(url) {
   try {
     const response = await fetch(url);
