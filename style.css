@@ -135,3 +135,69 @@ form button {
   font-size: 2rem;
   font-weight: 700;
 }
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  margin-block: 2em;
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  overflow: visible;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1.5em;
+  flex: 1;
+  border: 1px solid var(--border-color, #ccc);
+  padding: 1.5em;
+  margin: 0;
+  list-style: none;
+  border-radius: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.swatch {
+  display: inline-block;
+  width: 1em;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color);
+  border-radius: 50%;
+}
+
+/* Search bar */
+.searchBar {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 2em;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 4px;
+}
+
+/* SVG Interactions */
+#projects-pie-plot path {
+  cursor: pointer;
+  transition: 300ms;
+}
+
+#projects-pie-plot:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}
