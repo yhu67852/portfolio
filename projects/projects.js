@@ -55,7 +55,6 @@ function renderPieChart(pieData) {
   const arcData = sliceGenerator(pieData);
   const arcs = arcData.map((d) => arcGenerator(d));
 
-  // Render pie slices
   arcs.forEach((arc, i) => {
     svg
       .append('path')
@@ -84,7 +83,8 @@ function renderPieChart(pieData) {
 if (searchInput) {
   searchInput.addEventListener('input', (event) => {
     query = event.target.value;
-    selectedIndex = -1; 
+    selectedIndex = -1;
+    applyFilters();
   });
 }
 
