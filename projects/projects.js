@@ -6,33 +6,40 @@ const projectsContainer = document.querySelector('.projects');
 const searchInput = document.querySelector('.searchBar');
 
 let query = '';
-let selectedIndex = -1;
-
+let selectedYear = null; 
 const colors = d3.scaleOrdinal(d3.schemeTableau10);
 const arcGenerator = d3.arc().innerRadius(0).outerRadius(50);
 const sliceGenerator = d3.pie().value((d) => d.value);
 
-function applyFilters() {
+function filterProjects() {
   let filtered = projects.filter((project) => {
-    let values = Object.values(project).join('\n').toLowerCase();
+    let values = Object.values(project)
+      .flatMap((val) => (Array.isArray(val) ? val : [val]))
+      .filter(Boolean)
+      .join('\n')
+      .toLowerCase();
     return values.includes(query.toLowerCase());
   });
 
   let rolledData = d3.rollups(
     filtered,
     (v) => v.length,
-    (d) => d.year,
+    (d) => d.year
   );
+
   let pieData = rolledData.map(([year, count]) => ({
     value: count,
     label: year,
   }));
 
+  if (selectedYear && !pieData.some((d) => String(d.label) === String(selectedYear))) {
+    selectedYear = null;
+  }
+
   renderPieChart(pieData);
 
-  if (selectedIndex !== -1 && pieData[selectedIndex]) {
-    const selectedYear = pieData[selectedIndex].label;
-    filtered = filtered.filter((project) => project.year === selectedYear);
+  if (selectedYear !== null) {
+    filtered = filtered.filter((project) => String(project.year) === String(selectedYear));
   }
 
   renderProjects(filtered, projectsContainer, 'h2');
@@ -46,7 +53,6 @@ function renderPieChart(pieData) {
   const svg = d3.select('#projects-pie-plot');
   const legend = d3.select('.legend');
 
-  // Clear previous paths and legend items
   svg.selectAll('path').remove();
   legend.selectAll('li').remove();
 
@@ -55,27 +61,32 @@ function renderPieChart(pieData) {
   const arcData = sliceGenerator(pieData);
   const arcs = arcData.map((d) => arcGenerator(d));
 
+  // Render pie slices
   arcs.forEach((arc, i) => {
+    const isSelected = String(pieData[i].label) === String(selectedYear);
+
     svg
       .append('path')
       .attr('d', arc)
       .attr('fill', colors(i))
-      .attr('class', i === selectedIndex ? 'selected' : '')
+      .attr('class', isSelected ? 'selected' : '')
       .on('click', () => {
-        selectedIndex = selectedIndex === i ? -1 : i;
-        applyFilters();
+        selectedYear = isSelected ? null : pieData[i].label;
+        filterProjects();
       });
   });
 
   pieData.forEach((d, idx) => {
+    const isSelected = String(d.label) === String(selectedYear);
+
     legend
       .append('li')
       .attr('style', `--color:${colors(idx)}`)
-      .attr('class', `legend-item ${idx === selectedIndex ? 'selected' : ''}`)
+      .attr('class', `legend-item ${isSelected ? 'selected' : ''}`)
       .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`)
       .on('click', () => {
-        selectedIndex = selectedIndex === idx ? -1 : idx;
-        applyFilters();
+        selectedYear = isSelected ? null : d.label;
+        filterProjects();
       });
   });
 }
@@ -83,9 +94,8 @@ function renderPieChart(pieData) {
 if (searchInput) {
   searchInput.addEventListener('input', (event) => {
     query = event.target.value;
-    selectedIndex = -1;
-    applyFilters();
+    filterProjects();
   });
 }
 
-applyFilters();
+filterProjects();
